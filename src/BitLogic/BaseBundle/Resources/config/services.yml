@@ -1,0 +1,32 @@
+#imports:
+#    - { resource: Controles/services.yml }
+
+parameters:
+#    parametros.example.class: Ministerio\ParametrosBundle\Example
+
+services:
+#    parametros.example:
+#        class: %parametros.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+      utiles:
+        class: BitLogic\BaseBundle\Expertos\ExpertoGenerico
+        arguments: ["@service_container"]
+      type.meses_txt:
+        class: BitLogic\BaseBundle\Form\MesesTxtType
+        tags:
+          - { name: form.type, alias: meses_txt }
+      type.tipo_doc:
+        class: BitLogic\BaseBundle\Form\TipoDocType
+        tags:
+          - { name: form.type, alias: tipo_doc }
+      type.sexo:
+        class: BitLogic\BaseBundle\Form\SexoType
+        tags:
+          - { name: form.type, alias: sexo }
+      type.activo:
+        class: BitLogic\BaseBundle\Form\ActivoType
+        tags:
+          - { name: form.type, alias: activo }
+          
+ 

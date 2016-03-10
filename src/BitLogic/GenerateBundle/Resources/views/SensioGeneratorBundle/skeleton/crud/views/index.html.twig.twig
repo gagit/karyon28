@@ -1,0 +1,125 @@
+{% block extends %}
+{{ "{% extends '"}}{{ bundle }}{{"::layout.html.twig' %}" }}
+{% endblock extends %}
+{{ "{% block stylesheets %}" }}
+{{ " {{ parent() }} " }}
+
+{{ "{% endblock %}" }}
+
+{{ "{% block javascripts %}" }}
+{{ " {{ parent() }} " }}
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip({animation: true});
+        });
+        
+         $(function () {
+            $(".btn-mod").click(function (ev) {
+                ev.preventDefault();
+                var target = $(this).attr("href");
+                $("#modalPlantilla .modal-content").load(target, function () {
+                    $("#modalPlantilla").modal("show");
+                });
+            });
+        });
+    </script>
+{{ "{% endblock %}" }}
+{% block body %}
+{{ "{% block contenido %}" }}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4> 
+                <span class="glyphicon glyphicon-list"></span> Listado {{ entity }} </h4>
+        </div> 
+    </div>
+    <div class="container-fluid">
+    <div class="row-fluid ">        
+            {% if 'new' in actions %}
+            <div class="col-md-2">
+                <a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    Agregar {{ entity }}
+                </a>
+            </div>        
+            {% endif %}
+            <div class="col-md-10">
+                <div class="dropdown">
+                    <span class="dropdown-toggle btn btn-default glyphicon glyphicon-filter"
+                          data-toggle="dropdown" id="activa_filtros" name="activa_filtros" > Filtros</span>
+                    {{"{% form_theme formFiltro  'BaseBundle:Form:form_filter_layout.html.twig' %}" }}
+                    {{'{{ form_start(formFiltro) }}' }}
+                    {%- for field, metadata in fields %}
+                        {%- if loop.first %}
+
+                        {%- else %}
+                            {{'{{ form_row(formFiltro.'}}{{field}}{{') }}' }}
+                        {%- endif %}
+                    {%- endfor %}
+                    {{ '{{form_row(formFiltro.btnBuscar) }}' }}
+                     {{"{{ form_end(formFiltro, {'render_rest': false}) }}" }}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+        <hr/>
+    <div class="navigation">
+     {{" {{ knp_pagination_render(entities) }}" }}
+    </div>
+    
+    <table class="table table-bordered table-striped table-responsive">
+        <thead>
+            <tr>
+            {%- for field, metadata in fields %}
+                {%- if loop.first and ('show' in actions) %}
+
+                {%- else %}
+                    <th>{{ field|capitalize }}</th>
+                {%- endif %}
+            {%- endfor %}
+
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{ '{% for entity in entities %}' }}
+            <tr>
+
+        {%- for field, metadata in fields %}
+        
+            {%- if loop.first and ('show' in actions) %}
+
+            {%- else %}
+                {%- if metadata.type in ['date', 'datetime'] %}
+                    <td>{{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'d/m/Y H:i\') }}{% endif %}' }}</td>
+                {%- else %}
+                    <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+                {%- endif %}
+            {%- endif %}
+
+            
+
+            {%- if loop.last %}
+
+                <td>
+                    {%- include "crud/views/others/actions.html.twig.twig" %}
+                </td>
+
+            {%- endif %}
+        {%- endfor %}
+
+            </tr>
+        {{ '{% endfor %}' }}
+        </tbody>
+    </table>
+        <div class="modal fade bs-example-modal-lg" id="modalPlantilla" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
+
+{{ "{% endblock %}" }}
+{% endblock body %}

@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <!--
+    <parameters>
+        <parameter key="bds_doctrine.example.class">BDS\DoctrineBundle\Example</parameter>
+    </parameters>
+
+    <services>
+        <service id="bds_doctrine.example" class="%bds_doctrine.example.class%">
+            <argument type="service" id="service_id" />
+            <argument>plain_value</argument>
+            <argument>%parameter_name%</argument>
+        </service>
+    </services>
+    -->
+    <services>
+        <service id="nroInforme.set" class="BDS\DoctrineBundle\Eventos\NroInforme">
+            <tag name="doctrine.event_listener" event="prePersist" />
+        </service>
+        <service id="alta.allanamiento" class="BDS\DoctrineBundle\Eventos\Allanamientos">
+            <tag name="doctrine.event_listener" event="postPersist" />
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="alta.hallazgos" class="BDS\DoctrineBundle\Eventos\Hallazgos">
+            <tag name="doctrine.event_listener" event="postPersist" />
+            <argument type="service" id="service_container" />
+        </service>
+        <service id="actualizar.hallazgos" class="BDS\DoctrineBundle\Eventos\Hallazgos">
+            <tag name="doctrine.event_listener" event="postUpdate" />
+            <argument type="service" id="service_container" />
+        </service>
+    </services>
+</container>

@@ -1,0 +1,55 @@
+
+    /**
+{% block phpdoc_method_header %}
+     * Listado de todas las entidades {{ entity }} .
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/", name="{{ route_name_prefix }}")
+     * @Method("GET|POST")
+     * @Template()
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function indexAction()
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        $em = $this->getDoctrine()->getManager();
+        $request = $this->getRequest();
+        $paginator = $this->get('knp_paginator');
+
+        $formFiltro = $this->createForm(new {{ entity }}FilterType(),null,array(
+            'action' => $this->generateUrl('{{ route_name_prefix }}'),
+            'method' => 'POST',
+             'attr'=>array(
+                'name'=>'filtro',
+                'class'=>'dropdown-menu',
+                'role'=>'menu',
+            )
+        ));
+        $grilla = GrillaResolver::handleRequest($formFiltro, $request);
+        $query = $em->getRepository('{{ bundle }}:{{ entity }}')
+                    ->getQuery{{ entity }}($grilla);
+        $entities = $paginator->paginate($query,   //--->query que se utiliza
+                $this->getRequest()->query->get('pagina', 1), //--->pagina seleccionada, sino viene nada toma 1
+                20  //---> cant de filas x pagina
+        );
+{% endblock method_body %}
+
+{% block method_return %}
+{% if 'annotation' == format %}
+        return array(
+            'formFiltro'=>$formFiltro->createView(),
+            'entities' => $entities,
+        );
+{% else %}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', array(
+            'entities' => $entities,
+            'formFiltro'=>$formFiltro->createView(),
+        ));
+{% endif %}
+{% endblock method_return %}
+    }

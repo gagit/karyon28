@@ -1,0 +1,31 @@
+{% block extends %}
+{{ "{% extends '"}}{{ bundle }}{{"::layout.html.twig' %}" }}
+{% endblock extends %}
+{{ "{% block stylesheets %}" }}
+{{ " {{ parent() }} " }}
+
+{{ "{% endblock %}" }}
+
+{{ "{% block javascripts %}" }}
+{{ " {{ parent() }} " }}
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip({animation: true});
+        });
+    </script>
+{{ "{% endblock %}" }}
+{% block body %}
+{{ "{% block contenido -%}" }}
+     <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4> 
+                <span class="glyphicon glyphicon-plus-sign"></span> Nuevo/a {{ entity }} 
+            </h4>
+        </div> 
+    </div>
+    {{ '{{ form(form) }}' }}
+
+    {% set hide_edit, hide_delete = true, true %}
+    {% include 'crud/views/others/record_actions.html.twig.twig' %}
+{{ "{% endblock %}" }}
+{% endblock body %}

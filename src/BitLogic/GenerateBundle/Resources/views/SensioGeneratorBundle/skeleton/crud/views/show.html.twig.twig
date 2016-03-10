@@ -1,0 +1,37 @@
+{% block body %}
+<div class="modal-body">    
+    <div class="panel-heading" >
+        <h4><span class="glyphicon glyphicon-eye-open"></span> Datos de {{ entity }}</h4>
+    </div>   
+
+    <table class="table table-condensed table-responsive table-striped">
+        <tbody>
+        {%- for field, metadata in fields %}
+
+            <tr>
+                <th>{{ field|capitalize }}</th>
+
+            {%- if metadata.type in ['date', 'datetime'] %}
+
+                <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ '|date(\'d/m/Y H:i\') }}' }}</td>
+
+            {%- else %}
+
+                <td>{{ '{{ entity.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+            {%- endif %}
+
+            </tr>
+
+        {%- endfor %}
+
+        </tbody>
+    </table>
+
+ </div> 
+ <hr>           
+        
+<div class="modal-footer">
+    <button type="button"  id="btnCerrar" class="btn btn-default glyphicon glyphicon-remove" data-dismiss="modal"> Cerrar</button>
+</div>
+{% endblock body %}

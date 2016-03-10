@@ -1,0 +1,37 @@
+{{ "{% extends '"}}{{ bundle }}{{"::layout.html.twig' %}" }}
+
+{{ "{% block contenido -%}" }}
+<div class="panel-heading">
+  <h4> 
+  <span class="glyphicon glyphicon-eye-open"></span>  Ver {{ document }}
+ </h4>
+</div>
+<hr/>
+<table class="table">
+    <tbody>
+    {%- for field, metadata in fields %}
+
+        <tr>
+            <th>{{ field|capitalize }}</th>
+
+        {%- if metadata.type in ['date', 'datetime'] %}
+
+            <td>{{ '{{ document.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}' }}</td>
+
+        {%- else %}
+
+            <td>{{ '{{ document.'~ field|replace({'_': ''}) ~' }}' }}</td>
+
+        {%- endif %}
+
+        </tr>
+
+    {%- endfor %}
+
+    </tbody>
+</table>
+
+{% set hide_edit, hide_delete = true, false %}
+{% include 'views/others/record_actions.html.twig' %}
+
+{{ "{% endblock %}" }}

@@ -1,0 +1,86 @@
+    /**
+{% block phpdoc_method_header %}
+     * Crea un/a {{ entity }} .
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/", name="{{ route_name_prefix }}_create")
+     * @Method("POST")
+     * @Template("{{ bundle }}:{{ entity }}:new.html.twig")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function createAction(Request $request)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        $entity = new {{ entity_class }}();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            try{
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($entity);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add(
+                            'notice', 'El proceso se realizó correctamente!');
+                return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
+            } catch (\Doctrine\DBAL\DBALException $DBalEx) {
+                     $this->get('session')->getFlashBag()->add(
+                                    'error', 'Se ha producido un error en la base de datos!!. '
+                             . $DBalEx->getMessage() );
+            } catch (\Exception $ex) {
+                 $this->get('session')->getFlashBag()->add(
+                                'error', 'Se ha producido un error no determinado!. '.$ex->getMessage());
+
+            }    
+
+        }
+{% endblock method_body %}
+
+{% block method_return %}
+{% if 'annotation' == format %}
+        return array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        );
+{% else %}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ));
+{% endif %}
+{% endblock method_return %}
+    }
+
+{% block form %}
+    /**
+    * Crea el formulario para crear un/a {{ entity }} .
+    *
+    * @param {{ entity_class }} $entity La entidad
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createCreateForm({{ entity_class }} $entity)
+    {
+        $form = $this->createForm(new {{ entity_class }}Type(), $entity, array(
+            'action' => $this->generateUrl('{{ route_name_prefix }}_create'),
+            'method' => 'POST',
+        ));
+
+        $form->add('submit', 'submit', array(   
+                'attr'=> array(
+                         'class'=>'btn btn-default glyphicon glyphicon-floppy-save',
+                         'data-toggle' => 'tooltip',
+                         'data-placement'=> 'top',
+                         'title'=> 'Grabar Nuevo',
+                          ),
+                  'label'=>' ')
+                  );
+
+        return $form;
+    }
+{% endblock form %}

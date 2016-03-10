@@ -1,0 +1,58 @@
+
+    /**
+     * Edita un documento existente de tipo {{ document }}.
+     *
+{% if 'annotation' == format %}
+     * @Route("/{id}/update", name="{{ route_name_prefix }}_update")
+     * @Method("POST")
+     * @Template("{{ bundle }}:{{ controller_namespace ? controller_namespace|replace({"\\": "/"}) ~ '/' : '' }}{{ document }}:edit.html.twig")
+     *
+     * @param Request $request El objeto request
+     * @param string $id       El ID del documento
+     *
+     * @return array
+{% else %}
+     * @param Request $request El objecto Request
+     * @param string $id       El ID del documento
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+{% endif %}
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException Si en documento no existe
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $dm = $this->getDocumentManager();
+
+        $document = $dm->getRepository('{{ bundle }}:{{ document }}')->find($id);
+
+        if (!$document) {
+            throw $this->createNotFoundException('Unable to find {{ document }} document.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm   = $this->createForm(new {{ document_class }}Type(), $document);
+        $editForm->bind($request);
+
+        if ($editForm->isValid()) {
+            $dm->persist($document);
+            $dm->flush();
+            $this->get('session')->getFlashBag()->add(
+                                'notice', 'El cambio se realizó correctamente!');
+            return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
+        }
+
+{% if 'annotation' == format %}
+        return array(
+            'document'    => $document,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
+{% else %}
+        return $this->render('{{ bundle }}:{{ document|replace({'\\': '/'}) }}:edit.html.twig', array(
+            'document'    => $document,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+{% endif %}
+    }

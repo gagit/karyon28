@@ -1,0 +1,12 @@
+/app/logs/dev.log
+/app/config/parameters.yml
+/app/logs/prod.log
+/app/cache/dev/
+/app/cache/prod/
+/web/bundles/
+/nbproject/
+/vendor/
+app/config/parameters.yml
+/vendor.zip
+/vendor.16.12.2014.tar.gz
+/vendorOld/

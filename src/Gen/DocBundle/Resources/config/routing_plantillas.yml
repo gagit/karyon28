@@ -1,0 +1,33 @@
+plantillas:
+    pattern:  index
+    defaults: { _controller: DocBundle:Modelos:index }
+    
+plantillas_show:
+    pattern:  show/{id}
+    defaults: { _controller: 'DocBundle:Modelos:show' }
+
+plantillas_ver_como_documento:
+    pattern:  ver_como_documento/{id}
+    defaults: { _controller: 'DocBundle:Modelos:verComoDocumento' }
+
+    
+plantillas_edit:
+    pattern:  editar/{id}
+    defaults: { _controller: 'DocBundle:Modelos:edit' }
+
+plantillas_new:
+    pattern:  nuevo
+    defaults: { _controller: 'DocBundle:Modelos:new' }
+    
+plantillas_delete:
+    pattern:  borrar/{id}
+    defaults: { _controller: 'DocBundle:Modelos:delete' }
+    
+plantillas_update:
+    pattern:  actualizar/{id}
+    defaults: { _controller: 'DocBundle:Modelos:update' }
+    
+plantillas_create:
+    pattern:  crear
+    defaults: { _controller: 'DocBundle:Modelos:create' }
+

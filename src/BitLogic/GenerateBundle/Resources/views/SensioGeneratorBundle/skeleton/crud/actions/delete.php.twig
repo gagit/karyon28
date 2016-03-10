@@ -1,0 +1,77 @@
+    /**
+{% block phpdoc_method_header %}
+     * Borra un/a entidad {{ entity }}.
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/borra/{id}", name="{{ route_name_prefix }}_delete")
+     * @Method("DELETE")
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function deleteAction(Request $request, $id)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            try{
+                $em = $this->getDoctrine()->getManager();
+                $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+
+                if (!$entity) {
+                    throw $this->createNotFoundException('No se pudo encontrrar la entidad {{ entity }} entity.');
+                }
+
+                $em->remove($entity);
+                $em->flush();
+            } catch (\Doctrine\DBAL\DBALException $DBalEx) {
+                     $this->get('session')->getFlashBag()->add(
+                                    'error', 'Se ha producido un error en la base de datos!!. '
+                             . $DBalEx->getMessage() );
+            } catch (\Exception $ex) {
+                 $this->get('session')->getFlashBag()->add(
+                                'error', 'Se ha producido un error no determinado!. '.$ex->getMessage());
+
+            }     
+        }
+{% endblock method_body %}
+
+{% block method_return %}
+        $this->get('session')->getFlashBag()->add(
+                                'notice', 'El operación se realizó correctamente!');
+        return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
+{% endblock method_return %}
+    }
+
+{% block form %}
+    /**
+     * Crea un formulario para borrar un/a {{ entity }} por id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('{{ route_name_prefix }}_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array(
+                               'attr'=> array(
+                                    'onclick'=>"return confirm('¿Estas seguro de ELIMIAR el elemento?');",
+                                    'class'=>'btn btn-danger glyphicon glyphicon-remove-sign',
+                                   'data-toggle' => 'tooltip',
+                                   'data-placement'=> 'top',
+                                   'title'=> 'Eliminar Elemento',
+                                ),
+                                'label' => ' '
+                          ))
+            ->getForm()
+        ;
+    }
+{% endblock form %}

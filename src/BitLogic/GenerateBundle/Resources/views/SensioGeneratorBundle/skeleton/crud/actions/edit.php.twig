@@ -1,0 +1,79 @@
+
+    /**
+{% block phpdoc_method_header %}
+     *Muestra un formulario para editar una entidad  {{ entity }} existente .
+{% endblock phpdoc_method_header %}
+     *
+{% block phpdoc_method_annotations %}
+{% if 'annotation' == format %}
+     * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
+     * @Method("GET")
+     * @Template()
+{% endif %}
+{% endblock phpdoc_method_annotations %}
+     */
+{% block method_definition %}
+    public function editAction($id)
+{% endblock method_definition %}
+    {
+{% block method_body %}
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('No se pudo encontrar {{ entity }} .');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+{% endblock method_body %}
+
+{% block method_return %}
+{% if 'annotation' == format %}
+        return array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
+{% else %}
+        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+{% endif %}
+{% endblock method_return %}
+    }
+
+{% block form %}
+    /**
+    * Crea un formulario para editar una entidad {{ entity }}.
+    *
+    * @param {{ entity_class }} $entity La entidad
+    *
+    * @return \Symfony\Component\Form\Form El formulario
+    */
+    private function createEditForm({{ entity_class }} $entity)
+    {
+        $form = $this->createForm(new {{ entity_class }}Type(), $entity, array(
+            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => $entity->getId())),
+            'attr'=> array(
+                'id' => 'edit-form'
+            ),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array(
+                  'attr'=> array(
+                     'class'=>'btn btn-default glyphicon glyphicon-floppy-save',
+                     'data-toggle' => 'tooltip',
+                     'data-placement'=> 'top',
+                     'title'=> 'Guardar Cambios',
+                      ),
+                  'label'=>' '
+                  ));
+
+        return $form;
+    }
+{% endblock form %}

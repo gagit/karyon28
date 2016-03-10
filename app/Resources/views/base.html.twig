@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <title>{% block titulo %}{% endblock %} | Ministerio Público - Poder Judicial Mendoza</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block javascripts %}{% endblock %}        
+{% block stylesheets %}{% endblock %}
+<script src="{{ asset('bundles/siges/js/scriptDeEspera.js') }}" type="text/javascript"></script>
+</head>
+<body  onbeforeunload="mostrarMensajeEspera();"  >
+    {% block encabezado %}
+        <nav class="navbar navbar-collapse ">
+            <div class="row">
+                <div class="media col-sm-2 col-md-4 " >
+                    <a href="{{ path('home') }}">
+                        <img src="{{ asset('bundles/parametros/images/logomp-chico.png') }}" class="img-rounded img-thumbnail" alt="Escudo">
+                    </a>
+                </div>
+                <div class="col-sm-2 col-md-4">
+                    <div id="mensajeEspera" class="espera" align="center" >
+                        <img class="logoEspera" src="{{ asset('bundles/siges/images/loader.gif') }}" 
+                             alt="Estamos procesando su solicitud!! Por Favor, espere un momento." ></img>
+                    </div> 
+                </div>
+                <div class="col-sm-2 col-md-4">
+                    {% if app.user %}
+                        <br/>
+                        <div class="row col-sm-12">
+                            <div class="text-right">
+                                <span class="glyphicon glyphicon-user"></span>
+
+                                <a href="{{ path('fos_user_change_password') }}">  {{ app.user}} </a> 
+                                &nbsp;|&nbsp;
+                                <a href="{{ path('fos_user_security_logout') }}" >
+                                    <span class="glyphicon glyphicon-log-out"></span> Salir</a>
+                                &nbsp;&nbsp;
+                            </div>
+                        </div>
+
+
+
+                        {% if app.session.get('oficinaTrabajo') is defined %} 
+                            <div class="row col-md-12 text-info">
+                                <div class="text-right oficina_activa ">
+                                    {{ app.session.get('oficinaTrabajo') }}
+                                -
+                                    <a href="{{ path('seleccionar_oficinas') }}" class="btn_ficina_activa text-info"
+                                       data-toggle="tooltip" data-placement="top"  title="Click para Cambiar de Oficina" data-animation="true"
+                                       ><span class=" glyphicon glyphicon-retweet"></span> </a>
+                                </div> 
+                            </div>                                        
+                        {% endif %}
+
+
+
+                    {% else %}
+                        <div class="log" align="center" >
+
+                            <ul>
+                                <li><img src="{{ asset('bundles/siges/images/usuario.png') }}" alt="Usuario del Ministerio Público" /></li>
+                                <li><a href="{{ path('fos_user_security_login') }}">Ingresar</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>    
+            </div>
+        </nav>
+    {% endblock %}
+
+{% block menu %}{% endblock %}
+<div class="row " >
+    <div class="col-md-1" >
+        
+{% block latizq %}
+
+
+                {% endblock %}
+        
+    </div>
+    <div class="col-md-10 container-fluid" >
+        <div class="siges-content" >
+            {% for flashMessage in app.session.flashbag.get('notice') %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <span class="glyphicon glyphicon-ok"> </span>
+                    Mensaje: {{ flashMessage | raw }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>   
+                </div>
+            {% endfor %}
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <span class="glyphicon glyphicon-remove">   
+                        Error:   {{ flashMessage | raw }}
+                    </span> 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+
+                </div>
+            {% endfor %}
+            {% if form is defined %}
+                {% form_theme form '::form_errors.html.twig' %}
+            {% endif %}
+            <div class="panel panel-info" >
+                {% block contenido %}
+
+
+                {% endblock %}
+            </div>
+        </div> 
+    </div>
+    
+
+</div>  
+{% block pie %}
+    <br>
+    <br>
+    <br>
+    <nav  class="fixed-botton">
+        <hr/>
+        <div class="container ">
+            <div class="row text-info">
+                <div class="col-md-4">
+
+
+                </div>
+                <div class="col-md-4">
+                    <a href="http://ministeriopublico.jus.mendoza.gov.ar/" target="_blank" class="">
+                        <img src="{{ asset('bundles/parametros/images/logo_chico_pie.jpg') }}" alt="Ministerio Público">
+                        Ministerio Público - Poder Judicial Mendoza</a>
+
+                </div>
+                <div class="col-md-4 text-center">
+
+                </div>
+
+            </div>    
+        </div>
+    </nav>
+{% endblock %}
+</body>
+</html>

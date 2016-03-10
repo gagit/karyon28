@@ -1,0 +1,57 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Debug\Debug;
+
+// if you don't want to setup permissions the proper way, just uncomment the following PHP line
+// read http://symfony.com/doc/current/book/installation.html#configuration-and-setup for more information
+//umask(0000);
+
+set_time_limit(0);
+
+/**
+ * @var Composer\Autoload\ClassLoader $loader
+ */
+$loader = require __DIR__.'/autoload.php';
+
+//use Symfony\Bundle\FrameworkBundle\Console\Application;
+//use Symfony\Component\Console\Input\ArgvInput;
+//use Symfony\Component\Debug\Debug;
+use Ministerio\DenunciasBundle\Command\TareasTurnos;
+use Ministerio\SeguridadBundle\Command\CargarUsuarios;
+use Ministerio\SeguridadBundle\Command\ActualizarUsuarios;
+use Ministerio\SeguridadBundle\Command\AgregarUsuario;
+use Ministerio\SeguridadBundle\Command\ActualizarPswUsuario;
+use Ministerio\SeguridadBundle\Command\ActualizarRolUsuario;
+use Ministerio\ParametrosBundle\Command\TareasOperadores;
+use Ministerio\ParametrosBundle\Command\UDepOficinas;
+use Ministerio\LocalizadorBundle\Command\MigrarMovimientos;
+use Ministerio\LocalizadorBundle\Command\MigrarDocumentos;
+use Ministerio\MongoDocsBundle\Command\MigrarDocumentosWord;
+use Ministerio\MongoDocsBundle\Command\ConvertirOffice2PDF;
+
+$input = new ArgvInput();
+$env = $input->getParameterOption(array('--env', '-e'), getenv('SYMFONY_ENV') ?: 'dev');
+$debug = getenv('SYMFONY_DEBUG') !== '0' && !$input->hasParameterOption(array('--no-debug', '')) && $env !== 'prod';
+
+if ($debug) {
+    Debug::enable();
+}
+
+$kernel = new AppKernel($env, $debug);
+$application = new Application($kernel);
+$application ->add(new TareasTurnos());
+$application ->add(new TareasOperadores());
+//$application ->add(new CargarUsuarios());
+$application ->add(new ActualizarUsuarios());
+$application ->add(new AgregarUsuario());
+$application ->add(new ActualizarPswUsuario());
+$application ->add(new ActualizarRolUsuario());
+$application ->add(new UDepOficinas());
+$application ->add(new MigrarMovimientos());
+$application ->add(new MigrarDocumentos());
+$application ->add(new MigrarDocumentosWord());
+$application ->add(new ConvertirOffice2PDF());
+$application->run($input);

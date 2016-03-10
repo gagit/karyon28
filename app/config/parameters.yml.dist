@@ -1,0 +1,42 @@
+parameters:
+    database_driver: oci8
+    database_host: 10.20.251.33
+    database_port: 1521
+    database_name: XE
+    database_user: mp_ap_gestion
+    database_password: gestdesa
+    #----------------
+    database_driver_linjus4: pdo_pgsql
+    database_host_linjus4: linjus4
+    database_port_linjus4: '6666'
+    database_name_linjus4: documentos_penales
+    database_user_linjus4: gtoledo
+    database_password_linjus4: postgresgt
+
+    database_driver_portal: oci8
+    database_host_portal: 10.20.251.33
+    database_port_portal: 1521
+    database_name_portal: XE
+    database_user_portal: mp_ap_denuncias
+    database_password_portal: gestdesa
+
+    mongo_server:  mongodb://mpmongo
+    mongo_base: mp_documentos
+    mongo_puerto: 27017
+    mongo_usuario: usuario
+    mongo_pass: pass
+
+    ES_server: mpmongo
+    ES_puerto: 9200
+########################
+    mailer_transport:  smtp
+    mailer_host:       localhost
+    mailer_user:       ~
+    mailer_password:   ~
+
+    locale:            es
+    secret:            9c41f8e18bcfaf4bdea71f425fac6a0c
+
+
+    java: "" 
+    swftools: ""

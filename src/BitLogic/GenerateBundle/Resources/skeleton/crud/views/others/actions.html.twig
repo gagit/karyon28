@@ -1,0 +1,19 @@
+
+                <ul>
+
+                {%- for action in record_actions %}
+
+                    <li>
+                        <a href="{{ "{{ path('"~ route_name_prefix ~"_"~ action ~"', { 'id': document.id }) }}" }}"class="btn btn-default">
+                            
+                            {% if action=='show' %}
+                                <span class="glyphicon glyphicon-eye-open"></span> Ver
+                            {%else%}
+                                 <span class="glyphicon glyphicon-edit"></span> Editar
+                            {%endif%}
+                        </a>
+                    </li>
+
+                {%- endfor %}
+
+                </ul>

@@ -1,0 +1,36 @@
+<?php
+
+namespace {{ namespace }}\Repository{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+{% block use_statements %}
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
+{% endblock use_statements %}
+
+{% block class_definition %}
+class {{ entity_class }}Repository extends EntityRepository
+{% endblock class_definition %}
+{
+{% block class_body %}
+    
+    public function getQuery{{ entity_class }}($grilla) {
+
+        $query = $this->createQueryBuilder('q')
+                ->select('q');
+        {%- for field,metadata in fields %}
+            {%- if field !='id' %}
+                    if($grilla->{{ field }}) {
+                        $query->andWhere($query->expr()->eq('q.{{ field }}', ':{{ field }}'))
+                            ->setParameter('{{ field }}', $grilla->{{ field }});
+                    }
+                
+            {%- endif %}
+            
+            
+        {%- endfor %}
+        
+        return  $query;
+    }
+{% endblock class_body %}
+}

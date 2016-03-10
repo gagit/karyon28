@@ -1,0 +1,69 @@
+{{ "{% extends '"}}{{ bundle }}{{"::layout.html.twig' %}" }}
+
+{{ "{% block contenido %}" }}
+<div class="panel-heading">
+  <h4> 
+  <span class="glyphicon glyphicon-list"></span>  Listado de {{ document }}
+ </h4>
+</div>
+<hr/>
+{% if 'new' in actions %}
+<ul>
+    <li>
+        <a href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+            Agregar Nuevo
+        </a>
+    </li>
+</ul>
+<hr/>
+{% endif %}
+<table class="table table-bordered table-striped table-responsive">
+    <thead>
+        <tr>
+        {%- for field, metadata in fields %}
+
+            <th>{{ field|capitalize }}</th>
+
+        {%- endfor %}
+
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    {{ '{% for document in documents %}' }}
+        <tr>
+
+    {%- for field, metadata in fields %}
+{#           
+        {%- if loop.first and ('show' in actions) %}
+
+            <td><a href="{{ "{{ path('"~ route_name_prefix ~"_show', { 'id': document.id }) }}" }}">
+{{ '{{ document.'~ field|replace({'_': ''}) ~' }}' }}</a></td>
+#}
+        {%- if metadata.type in ['date', 'datetime'] %}
+
+            <td>{{ '{% if document.'~ field|replace({'_': ''}) ~' %}{{ document.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+
+        {%- else %}
+
+            <td>{{ '{{ document.'~ field|replace({'_': ''}) ~' }}' }}</td>
+
+        {%- endif %}
+
+        {%- if loop.last %}
+
+            <td>
+                {%- include "views/others/actions.html.twig" %}
+            </td>
+
+        {%- endif %}
+    {%- endfor %}
+
+        </tr>
+    {{ '{% endfor %}' }}
+    </tbody>
+</table>
+
+
+{{ "{% endblock %}" }}

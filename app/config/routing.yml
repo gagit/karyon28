@@ -1,0 +1,120 @@
+asistencia:
+    resource: "@AsistenciaBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+informes:
+    resource: "@InformesBundle/Controller/"
+    prefix:   /    
+#############   
+controles:
+    resource: "@ControlesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+##############
+
+genui:
+    resource: "@GenuiBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+#ministerio_elastica:
+#    resource: "@MinisterioElasticaBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+localizador:
+    resource: "@LocalizadorBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+estadisticas_web:
+    resource: "@EstadisticasWebBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+mongo_docs:
+    resource: "@MongoDocsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+parametros:
+    resource: "@ParametrosBundle/Resources/config/routing.yml"
+    prefix:   /
+
+documentos:
+    resource: "@DocumentosBundle/Resources/config/routing.yml"
+    prefix:   /
+doc:
+    resource: "@DocBundle/Resources/config/routing.yml"
+    prefix:   /
+
+bds_doctrine:
+    resource: "@BDSDoctrineBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+# Internal routing configuration to handle ESI
+#_internal:
+#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#    prefix:   /_internal
+SeguridadBundle:
+    resource: "@SeguridadBundle/Resources/config/routing.yml"
+    prefix:   /
+DenunciasBundle:
+    resource: "@DenunciasBundle/Resources/config/routing.yml"
+#SigesBundle:
+#    resource: "@SigesBundle/Resources/config/routing.yml"
+#    prefix:   /
+SigesBundle:
+    resource: "@SigesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+    
+portal:
+    resource: "@PortalBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+_profiler:
+    resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
+    prefix:   /_profiler
+### HOMES
+
+home_aux:
+    pattern:  /
+    #defaults: { _controller: 'DocumentosBundle:Documentos:portadaConstancia' }
+    defaults: { _controller: 'ParametrosBundle:Panel:indexAuxiliar' }
+home_admin:
+    pattern:  /home_admin
+    defaults: { _controller: 'ParametrosBundle:Panel:indexAdmin' }
+home_coordinacion:
+    pattern:  /home_coordinacion
+    defaults: { _controller: 'SigesBundle:BienesAfectados:verListadoVehiculos' }
+home_fiscal:
+    pattern:  /home_fiscal
+    defaults: { _controller: 'SigesBundle:BienesAfectados:verListadoVehiculos' }
+
+home_admin_familia:
+    pattern:  /home_admin_familia
+    defaults: { _controller: 'SeguridadBundle:Default:indexFamilia' }
+
+#####

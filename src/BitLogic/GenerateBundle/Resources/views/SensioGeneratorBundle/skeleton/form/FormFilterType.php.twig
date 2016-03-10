@@ -1,0 +1,91 @@
+<?php
+
+namespace {{ namespace }}\Form\Filter{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
+
+{% block use_statements %}
+use BitLogic\BaseBundle\Form\FiltroHtmlType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+{% endblock use_statements %}
+
+{% block class_definition %}
+class {{ form_class }} extends FiltroHtmlType
+{% endblock class_definition %}
+{
+{% block class_body %}
+    {% if fields|length > 0 %}
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+        $builder
+        {%- for field,metadata in fields %}
+            {% if field !='id' %}
+                {%- if metadata.type in [ 'datetime'] %}
+
+                        ->add('{{ field }}','datetime',
+                                array(
+
+                                    'label'=>'Fecha: ',
+                                    'widget' => 'single_text',
+                                    'format' => 'dd/MM/yyyy - H:m',
+
+                                    'attr'=> array('class'=>'form-control',
+                                                              'readonly'=>true),
+
+                                ))
+
+                {%- else %}
+                    {%- if metadata.type in ['date'] %}
+                            ->add('{{ field }}','date',
+                                array(
+                                    'required'=>false,
+
+                                      'label'=>'Fecha: ',
+                                      'widget' => 'single_text',
+                                      'format' => 'dd/MM/yyyy',
+
+                                      'attr'=> array('class'=>'form-control',
+                                                              'readonly'=>true),
+
+                                ))            
+
+                    {%- else %}
+
+                    ->add('{{ field }}',null, array(
+                              'attr'=>array(
+                                     'class' =>'form-control',
+                              )
+                    ))
+
+                    {%- endif %}
+                {%- endif %}
+            {%- endif %}
+            
+            
+        {%- endfor %}
+
+        ;
+    }
+    {% endif %}
+
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return '{{ form_type_name }}';
+    }
+{% endblock class_body %}
+}

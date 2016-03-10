@@ -1,0 +1,50 @@
+
+    /**
+     * Busca y muestra un documento de tipo {{ document }} .
+     *
+{% if 'annotation' == format %}
+     * @Route("/{id}/show", name="{{ route_name_prefix }}_show")
+     * @Template()
+     *
+     * @param string $id El ID del documento
+     *
+     * @return array
+{% else %}
+     * @param string $id El ID del documento
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+{% endif %}
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException Si en documento no existe
+     */
+    public function showAction($id)
+    {
+        $dm = $this->getDocumentManager();
+
+        $document = $dm->getRepository('{{ bundle }}:{{ document }}')->find($id);
+
+        if (!$document) {
+            throw $this->createNotFoundException('No se encontro el documento {{ document }} .');
+        }
+{% if 'delete' in actions %}
+
+        $deleteForm = $this->createDeleteForm($id);
+{% endif %}
+
+{% if 'annotation' == format %}
+        return array(
+            'document' => $document,
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{% endif %}
+        );
+{% else %}
+
+        return $this->render('{{ bundle }}:{{ document|replace({'\\': '/'}) }}:show.html.twig', array(
+            'document' => $document,
+{% if 'delete' in actions %}
+            'delete_form' => $deleteForm->createView(),
+{%- endif %}
+        ));
+{% endif %}
+    }

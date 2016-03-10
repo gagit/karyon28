@@ -1,0 +1,256 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:         
+        cookie_lifetime: 28800
+        gc_maxlifetime: 3600
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    form:
+        resources: 
+          - 'ParametrosBundle:Form:form_table_layout.html.twig'
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: false
+    bundles:        [ ]
+    #java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        #closure:
+        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        #yui_css:
+        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+
+# Doctrine Configuration
+doctrine:
+  dbal:
+    default_connection: siges
+    connections:
+      siges:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        persistent:  true
+      linjus4:
+        driver:   %database_driver_linjus4%
+        host:     %database_host_linjus4%
+        port:     %database_port_linjus4%
+        dbname:   %database_name_linjus4%
+        user:     %database_user_linjus4%
+        password: %database_password_linjus4%
+        charset:  UTF8
+        persistent:  true
+      portal:
+        driver:   %database_driver_portal%
+        host:     %database_host_portal%
+        port:     %database_port_portal%
+        dbname:   %database_name_portal%
+        user:     %database_user_portal%
+        password: %database_password_portal%
+        charset:  UTF8
+        persistent:  true  
+
+  orm:
+      auto_generate_proxy_classes: true
+      #auto_mapping: true
+      default_entity_manager: default
+      entity_managers:
+        default:
+          connection: siges
+          mappings: 
+              SigesBundle: ~
+              ControlesBundle: ~
+              SeguridadBundle: ~
+              ParametrosBundle: ~
+              DocumentosBundle: ~
+              EstadisticasWebBundle: ~
+              InformesBundle: ~
+              AsistenciaBundle: ~
+              
+        localizador:
+          connection: linjus4
+          mappings:
+              LocalizadorBundle: ~
+              
+        portal: 
+          connection: portal
+          mappings:
+              PortalBundle: ~
+              DenunciasBundle: ~
+              
+doctrine_mongodb:
+  default_database: %mongo_base%
+  connections:
+    default:
+      server: %mongo_server%:%mongo_puerto%
+      options:
+        connect: ~
+        socketTimeoutMS:  180000
+        wTimeoutMS:       180000
+        #username: %mongo_usuario%
+        #password: %mongo_pass%
+        
+  document_managers:
+    default:
+      mappings: 
+        MongoDocsBundle: ~
+        
+gregwar_captcha:
+    width: 200
+    height: 50
+    length: 6
+
+# Swiftmailer Configuration
+#swiftmailer:
+#    transport: %mailer_transport%
+#    host:      %mailer_host%
+#    username:  %mailer_user%
+#    password:  %mailer_password%
+#    spool:     { type: memory }
+
+swiftmailer:
+    transport: smtp
+    host:      mail.jus.mendoza.gov.ar
+    username:  sistemasmp@jus.mendoza.gov.ar
+    password:  s1st3m0$
+    #spool:     ~
+    logging:   "%kernel.debug%"
+    
+services:
+    listener.ora:
+        #class: Doctrine\DBAL\Event\Listeners\OracleSessionInit 
+        class: BDS\DoctrineBundle\lib\Doctrine\DBAL\Event\Listeners\OracleSessionInit 
+        tags:
+            - { name: doctrine.event_listener, event: postConnect}
+            
+    filtro_expte:
+        class: Ministerio\SigesBundle\Twig\Extension\SigesExtension 
+        tags:
+            - { name: twig.extension }
+    fos_user.doctrine_registry:
+        alias: doctrine
+fos_user:
+    db_driver: orm
+    firewall_name: main
+    user_class: Ministerio\SeguridadBundle\Entity\MPUsuario
+    registration:
+       form:
+           type: ministerio_user_registration
+               
+fos_elastica:
+    clients:
+        default: { host: %ES_server%, port: %ES_puerto% }    
+    indexes:
+        localizador:
+            client: default
+            #index_name: indice_escritos
+            settings:
+                index:
+                  analysis:
+                        analyzer:
+                            my_analyzer:
+                                type: snowball
+                                language: Spanish
+            types:
+                type_escritos:
+                    mappings:
+                        txtDoc: {analyzer: my_analyzer ,store: yes}
+                    persistence:
+                        elastica_to_model_transformer:
+                            ignore_missing: true
+                        driver: mongodb 
+                        model: Ministerio\MongoDocsBundle\Document\DocumentoFisico
+                        provider: 
+                            batch_size: 200
+                        listener: 
+                            immediate : ~
+                        finder: ~
+                type_personas:
+                    mappings:
+                        apellido: {store: yes}
+                        nombre: { store: yes}
+                        alias: { store: yes}
+                        nro_documento: { store: yes}
+                    persistence:
+                        elastica_to_model_transformer:
+                            ignore_missing: true
+                        driver: orm 
+                        model: Ministerio\SigesBundle\Entity\Personas
+                        provider: 
+                            batch_size: 200
+                        listener:  
+                            immediate : true
+                        finder: ~
+knp_paginator:
+    page_range: 5  # número de páginas que se muestran en el paginador
+
+    default_options:
+        # los siguientes tres parámetros permiten "traducir" el paginador
+        # puedes utilizar por ejemplo: 'pagina', 'ordenar' y 'direccion'
+        page_name:           pagina
+        sort_field_name:     sort
+        sort_direction_name: direction
+        # sólo incluir resultados diferentes (útil cuando haces consultas GROUP BY)
+        distinct: false
+
+    template:
+        # estas opciones configuran la plantilla utilizada para la paginación
+        # y para los controles que premiten reordenar los resultados
+        # pagination: KnpPaginatorBundle:Pagination:sliding.html.twig
+        pagination: ParametrosBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
+        sortable:   ParametrosBundle:Pagination:sortable_link.html.twig
+stfalcon_tinymce:
+#  include_jquery: true
+  tinymce_jquery: true
+  selector: ".tinymce"
+  theme:
+        simple:
+            content_css: "/bundles/documentos/css/modelos_tinymce.css"
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     /usr/local/bin/wkhtmltopdf
+        options:    
+          encoding: UTF8
+        #  load-error-handling: ignore
+          margin-left: 20
+    image:
+        enabled:    false
+        binary:     /usr/bin/wkhtmltoimage
+        options:    []
+
+genui:
+    autocomplete_entities:
+        expedientes:
+            class: SigesBundle:Causas
+            role: ROLE_AUX 
+            property: nro_expte
+
+genemu_form:
+    autocomplete: ~
