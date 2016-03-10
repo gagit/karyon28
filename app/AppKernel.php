@@ -30,7 +30,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             //--------------
-            
+            new BitLogic\BaseBundle\BaseBundle(),
+            new BitLogic\GenerateBundle\GenerateBundle(),
 
         );
 

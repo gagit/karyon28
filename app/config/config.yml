@@ -46,9 +46,9 @@ assetic:
 # Doctrine Configuration
 doctrine:
   dbal:
-    default_connection: siges
+    default_connection: default
     connections:
-      siges:
+      default:
         driver:   %database_driver%
         host:     %database_host%
         port:     %database_port%
@@ -57,24 +57,7 @@ doctrine:
         password: %database_password%
         charset:  UTF8
         persistent:  true
-      linjus4:
-        driver:   %database_driver_linjus4%
-        host:     %database_host_linjus4%
-        port:     %database_port_linjus4%
-        dbname:   %database_name_linjus4%
-        user:     %database_user_linjus4%
-        password: %database_password_linjus4%
-        charset:  UTF8
-        persistent:  true
-      portal:
-        driver:   %database_driver_portal%
-        host:     %database_host_portal%
-        port:     %database_port_portal%
-        dbname:   %database_name_portal%
-        user:     %database_user_portal%
-        password: %database_password_portal%
-        charset:  UTF8
-        persistent:  true  
+
 
   orm:
       auto_generate_proxy_classes: true
@@ -82,44 +65,27 @@ doctrine:
       default_entity_manager: default
       entity_managers:
         default:
-          connection: siges
+          connection: default
           mappings: 
-              SigesBundle: ~
-              ControlesBundle: ~
-              SeguridadBundle: ~
-              ParametrosBundle: ~
-              DocumentosBundle: ~
-              EstadisticasWebBundle: ~
-              InformesBundle: ~
-              AsistenciaBundle: ~
+              BaseBundle: ~
+              GenerateBundle: ~
               
-        localizador:
-          connection: linjus4
-          mappings:
-              LocalizadorBundle: ~
-              
-        portal: 
-          connection: portal
-          mappings:
-              PortalBundle: ~
-              DenunciasBundle: ~
-              
-doctrine_mongodb:
-  default_database: %mongo_base%
-  connections:
-    default:
-      server: %mongo_server%:%mongo_puerto%
-      options:
-        connect: ~
-        socketTimeoutMS:  180000
-        wTimeoutMS:       180000
-        #username: %mongo_usuario%
-        #password: %mongo_pass%
-        
-  document_managers:
-    default:
-      mappings: 
-        MongoDocsBundle: ~
+#doctrine_mongodb:
+#  default_database: %mongo_base%
+#  connections:
+#    default:
+#      server: %mongo_server%:%mongo_puerto%
+#      options:
+#        connect: ~
+#        socketTimeoutMS:  180000
+#        wTimeoutMS:       180000
+#        #username: %mongo_usuario%
+#        #password: %mongo_pass%
+#        
+#  document_managers:
+#    default:
+#      mappings: 
+#        MongoDocsBundle: ~
         
 gregwar_captcha:
     width: 200
@@ -149,10 +115,10 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postConnect}
             
-    filtro_expte:
-        class: Ministerio\SigesBundle\Twig\Extension\SigesExtension 
-        tags:
-            - { name: twig.extension }
+#    filtro_expte:
+#        class: Ministerio\SigesBundle\Twig\Extension\SigesExtension 
+#        tags:
+#            - { name: twig.extension }
     fos_user.doctrine_registry:
         alias: doctrine
 fos_user:
