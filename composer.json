@@ -1,6 +1,7 @@
 {
     "name": "gtoledo/karyon",
-    "license": "proprietary",
+    "descripcion":"Clases basicas para la mayoria de las aplicaciones",
+    "license": "MIT",
     "type": "library",
     "autoload": {
         "psr-4": {
