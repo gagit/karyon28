@@ -18,7 +18,7 @@
         "symfony/phpunit-bridge": "~2.7"
     },
     "autoload": {
-        "psr-4": {"BitLogic\\Generator\\": "src/BitLogic/Generator"},
-        "psr-4": {"BitLogic\\Base\\": "src/BitLogic/Base"}
+        "psr-4": {"BitLogic\\GeneratorBundle\\": "src/BitLogic/Generator"},
+        "psr-4": {"BitLogic\\BaseBundle\\": "src/BitLogic/Base"}
       }
 }
