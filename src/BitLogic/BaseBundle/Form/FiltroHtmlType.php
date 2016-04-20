@@ -36,7 +36,7 @@ class FiltroHtmlType extends AbstractType
                           ),
                   'label'=>' ')
                   )
-            ->setMethod('POST');
+            ->setMethod('GET');
 
     }
 

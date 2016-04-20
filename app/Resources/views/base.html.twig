@@ -16,9 +16,9 @@
         <nav class="navbar navbar-collapse ">
             <div class="row">
                 <div class="media col-sm-2 col-md-4 " >
-                    <a href="{{ path('home') }}">
+                   {# <a href="{{ path('home') }}">
                         <img src="{{ asset('bundles/parametros/images/logomp-chico.png') }}" class="img-rounded img-thumbnail" alt="Escudo">
-                    </a>
+                    </a>#}
                 </div>
                 <div class="col-sm-2 col-md-4">
                     <div id="mensajeEspera" class="espera" align="center" >
@@ -30,7 +30,7 @@
                     {% if app.user %}
                         <br/>
                         <div class="row col-sm-12">
-                            <div class="text-right">
+                            {#<div class="text-right">
                                 <span class="glyphicon glyphicon-user"></span>
 
                                 <a href="{{ path('fos_user_change_password') }}">  {{ app.user}} </a> 
@@ -38,7 +38,7 @@
                                 <a href="{{ path('fos_user_security_logout') }}" >
                                     <span class="glyphicon glyphicon-log-out"></span> Salir</a>
                                 &nbsp;&nbsp;
-                            </div>
+                            </div>#}
                         </div>
 
 
@@ -62,7 +62,7 @@
 
                             <ul>
                                 <li><img src="{{ asset('bundles/siges/images/usuario.png') }}" alt="Usuario del Ministerio Público" /></li>
-                                <li><a href="{{ path('fos_user_security_login') }}">Ingresar</a></li>
+{#                                <li><a href="{{ path('fos_user_security_login') }}">Ingresar</a></li>#}
                             </ul>
                         </div>
                     {% endif %}
@@ -128,9 +128,9 @@
 
                 </div>
                 <div class="col-md-4">
-                    <a href="http://ministeriopublico.jus.mendoza.gov.ar/" target="_blank" class="">
+                    {#<a href="http://ministeriopublico.jus.mendoza.gov.ar/" target="_blank" class="">
                         <img src="{{ asset('bundles/parametros/images/logo_chico_pie.jpg') }}" alt="Ministerio Público">
-                        Ministerio Público - Poder Judicial Mendoza</a>
+                        Ministerio Público - Poder Judicial Mendoza</a>#}
 
                 </div>
                 <div class="col-md-4 text-center">

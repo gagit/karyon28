@@ -7,7 +7,7 @@
 {% block phpdoc_method_annotations %}
 {% if 'annotation' == format %}
      * @Route("/", name="{{ route_name_prefix }}")
-     * @Method("GET|POST")
+     * @Method("GET")
      * @Template()
 {% endif %}
 {% endblock phpdoc_method_annotations %}
@@ -23,7 +23,7 @@
 
         $formFiltro = $this->createForm(new {{ entity }}FilterType(),null,array(
             'action' => $this->generateUrl('{{ route_name_prefix }}'),
-            'method' => 'POST',
+            'method' => 'GET',
              'attr'=>array(
                 'name'=>'filtro',
                 'class'=>'dropdown-menu',

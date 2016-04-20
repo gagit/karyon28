@@ -35,14 +35,14 @@
     <div class="container-fluid">
     <div class="row-fluid ">        
             {% if 'new' in actions %}
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}" class="btn btn-default">
                     <span class="glyphicon glyphicon-plus-sign"></span>
                     Agregar {{ entity }}
                 </a>
             </div>        
             {% endif %}
-            <div class="col-md-10">
+            <div class="col-md-8">
                 <div class="dropdown">
                     <span class="dropdown-toggle btn btn-default glyphicon glyphicon-filter"
                           data-toggle="dropdown" id="activa_filtros" name="activa_filtros" > Filtros</span>

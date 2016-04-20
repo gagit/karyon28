@@ -18,21 +18,17 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             //----------
-            new FOS\UserBundle\FOSUserBundle(),
-            new FOS\ElasticaBundle\FOSElasticaBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new BDS\DoctrineBundle\BDSDoctrineBundle(),
-            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
-            new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
             new Gen\DocBundle\DocBundle(),
             new Gen\uiBundle\GenuiBundle(),
             new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
-            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
+
             //--------------
             new BitLogic\BaseBundle\BaseBundle(),
             new BitLogic\GenerateBundle\GenerateBundle(),
-
+            new Bl\AcmeBundle\AcmeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

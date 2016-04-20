@@ -29,7 +29,7 @@ twig:
     strict_variables: %kernel.debug%
     form:
         resources: 
-          - 'ParametrosBundle:Form:form_table_layout.html.twig'
+          - 'BaseBundle:Form:form_table_layout.html.twig'
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
@@ -66,113 +66,29 @@ doctrine:
       entity_managers:
         default:
           connection: default
-          mappings: 
-              BaseBundle: ~
-              GenerateBundle: ~
+          auto_mapping: true
+
               
-#doctrine_mongodb:
-#  default_database: %mongo_base%
-#  connections:
-#    default:
-#      server: %mongo_server%:%mongo_puerto%
-#      options:
-#        connect: ~
-#        socketTimeoutMS:  180000
-#        wTimeoutMS:       180000
-#        #username: %mongo_usuario%
-#        #password: %mongo_pass%
-#        
-#  document_managers:
-#    default:
-#      mappings: 
-#        MongoDocsBundle: ~
+doctrine_mongodb:
+  default_database: %mongo_base%
+  connections:
+    default:
+      server: %mongo_server%:%mongo_puerto%
+      options:
+        connect: ~
+        socketTimeoutMS:  180000
+        wTimeoutMS:       180000
+        #username: %mongo_usuario%
+        #password: %mongo_pass%
         
-gregwar_captcha:
-    width: 200
-    height: 50
-    length: 6
+  document_managers:
+    default:
+      auto_mapping: true
+       
 
-# Swiftmailer Configuration
-#swiftmailer:
-#    transport: %mailer_transport%
-#    host:      %mailer_host%
-#    username:  %mailer_user%
-#    password:  %mailer_password%
-#    spool:     { type: memory }
-
-swiftmailer:
-    transport: smtp
-    host:      mail.jus.mendoza.gov.ar
-    username:  sistemasmp@jus.mendoza.gov.ar
-    password:  s1st3m0$
-    #spool:     ~
-    logging:   "%kernel.debug%"
-    
 services:
-    listener.ora:
-        #class: Doctrine\DBAL\Event\Listeners\OracleSessionInit 
-        class: BDS\DoctrineBundle\lib\Doctrine\DBAL\Event\Listeners\OracleSessionInit 
-        tags:
-            - { name: doctrine.event_listener, event: postConnect}
             
-#    filtro_expte:
-#        class: Ministerio\SigesBundle\Twig\Extension\SigesExtension 
-#        tags:
-#            - { name: twig.extension }
-    fos_user.doctrine_registry:
-        alias: doctrine
-fos_user:
-    db_driver: orm
-    firewall_name: main
-    user_class: Ministerio\SeguridadBundle\Entity\MPUsuario
-    registration:
-       form:
-           type: ministerio_user_registration
-               
-fos_elastica:
-    clients:
-        default: { host: %ES_server%, port: %ES_puerto% }    
-    indexes:
-        localizador:
-            client: default
-            #index_name: indice_escritos
-            settings:
-                index:
-                  analysis:
-                        analyzer:
-                            my_analyzer:
-                                type: snowball
-                                language: Spanish
-            types:
-                type_escritos:
-                    mappings:
-                        txtDoc: {analyzer: my_analyzer ,store: yes}
-                    persistence:
-                        elastica_to_model_transformer:
-                            ignore_missing: true
-                        driver: mongodb 
-                        model: Ministerio\MongoDocsBundle\Document\DocumentoFisico
-                        provider: 
-                            batch_size: 200
-                        listener: 
-                            immediate : ~
-                        finder: ~
-                type_personas:
-                    mappings:
-                        apellido: {store: yes}
-                        nombre: { store: yes}
-                        alias: { store: yes}
-                        nro_documento: { store: yes}
-                    persistence:
-                        elastica_to_model_transformer:
-                            ignore_missing: true
-                        driver: orm 
-                        model: Ministerio\SigesBundle\Entity\Personas
-                        provider: 
-                            batch_size: 200
-                        listener:  
-                            immediate : true
-                        finder: ~
+
 knp_paginator:
     page_range: 5  # número de páginas que se muestran en el paginador
 
@@ -189,15 +105,8 @@ knp_paginator:
         # estas opciones configuran la plantilla utilizada para la paginación
         # y para los controles que premiten reordenar los resultados
         # pagination: KnpPaginatorBundle:Pagination:sliding.html.twig
-        pagination: ParametrosBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
-        sortable:   ParametrosBundle:Pagination:sortable_link.html.twig
-stfalcon_tinymce:
-#  include_jquery: true
-  tinymce_jquery: true
-  selector: ".tinymce"
-  theme:
-        simple:
-            content_css: "/bundles/documentos/css/modelos_tinymce.css"
+        pagination: BaseBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
+        sortable:   BaseBundle:Pagination:sortable_link.html.twig
 knp_snappy:
     pdf:
         enabled:    true
@@ -208,15 +117,6 @@ knp_snappy:
           margin-left: 20
     image:
         enabled:    false
-        binary:     /usr/bin/wkhtmltoimage
+        binary:     /usr/bin/wkhtmltoimagedocument_manager
         options:    []
 
-genui:
-    autocomplete_entities:
-        expedientes:
-            class: SigesBundle:Causas
-            role: ROLE_AUX 
-            property: nro_expte
-
-genemu_form:
-    autocomplete: ~

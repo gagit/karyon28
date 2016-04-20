@@ -3,17 +3,14 @@
 
         $query = $this->createQueryBuilder('q')
                 ->select('q');
-        {%- for field,metadata in fields %}
-            {%- if field !='id' %}
-                    if($grilla->{{ field }}) {
-                        $query->andWhere($query->expr()->eq('q.{{ field }}', ':{{ field }}'))
-                            ->setParameter('{{ field }}', $grilla->{{ field }});
-                    }
-                
-            {%- endif %}
-            
-            
-        {%- endfor %}
+{% for field,metadata in fields %}
+    {% if field !='id' %}
+            if($grilla->{{ field }}) {
+                $query->andWhere($query->expr()->eq('q.{{ field }}', ':{{ field }}'))
+                    ->setParameter('{{ field }}', $grilla->{{ field }});
+            }
+    {% endif %}
+{% endfor %}
         
         return  $query;
     }
