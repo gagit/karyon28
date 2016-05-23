@@ -22,6 +22,28 @@
                 });
             });
         });
+
+        function limpiaForm(miForm) {
+            // recorremos todos los campos que tiene el formulario
+            $(':input', miForm).each(function () {
+                var type = this.type;
+                var tag = this.tagName.toLowerCase();
+                //limpiamos los valores de los campos…
+                if (type === 'text' || type === 'password' || tag === 'textarea')
+                    this.value = '';
+                // excepto de los checkboxes y radios, le quitamos el checked
+                // pero su valor no debe ser cambiado
+                else if (type === 'checkbox' || type === 'radio')
+                    this.checked = false;
+                // los selects le ponesmos el indice a -
+                else if (tag === 'select') {
+                    idSelect = '#' + this.id;
+                    $(idSelect).select2('val', '');
+                    this.selectedIndex = -1;
+                }
+            });
+        }
+
     </script>
 {{ "{% endblock %}" }}
 {% block body %}
@@ -56,6 +78,11 @@
                         {%- endif %}
                     {%- endfor %}
                     {{ '{{form_row(formFiltro.btnBuscar) }}' }}
+                                        
+                        <a class="btn btn-default btnChico" onclick="limpiaForm($('#{{'{{ formFiltro.vars.attr.id }}'}}'));" 
+                           data-toggle="tooltip" data-placement="top"  title="Click para Limpiar los Filtros" data-animation="true">
+                            <i class="fa fa-eraser"></i></a>
+                            
                      {{"{{ form_end(formFiltro, {'render_rest': false}) }}" }}
                 </div>
 
