@@ -1,23 +1,17 @@
 security:
     access_denied_url: /sistema/no_autorizado
     encoders:
-        FOS\UserBundle\Model\UserInterface: sha512
-        
+
         Symfony\Component\Security\Core\User\User: plaintext
-        ifrescoClient\LoginBundle\Security\IfrescoUser: plaintext
+
 
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username  
-        
+        in_memory:
+            memory: ~
 
     firewalls:
         main:
             pattern: ^/
-            form_login:
-              provider: fos_userbundle
-              csrf_provider: form.csrf_provider
-              success_handler: security.authentication.success_handler
             logout:       true
             anonymous:    true
         dev:
@@ -27,109 +21,8 @@ security:
             anonymous: ~ 
 
     access_control:
-      - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/seleccionarOficinas, role: IS_AUTHENTICATED_FULLY }
-      - { path: ^/procesarSeleccionOficina, role: IS_AUTHENTICATED_FULLY }
-      - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/doclocalizador, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/documentos/portada_constancia, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/documentos/buscar_persona_constancia, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/documentos/verificar_captcha_constancia, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/documentos/solicitar_constancia_expte, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/documentos/doc_para_imprimir, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/documentos/imprimir_documento, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/ordendespacho/ordendespacho_pdfTemplate, role: IS_AUTHENTICATED_ANONYMOUSLY }    
-      - { path: ^/ordendespacho/imprimir, role: IS_AUTHENTICATED_ANONYMOUSLY } 
-      - { path: ^/ordendespacho/, role: [ROLE_ADMIN, ROLE_AUX, ROLE_ORDENANZA] } 
-      - { path: ^/ordendespacho/nuevaorden, role: [ROLE_ADMIN, ROLE_ORDENANZA] } 
-      - { path: ^/register, role: [ROLE_ADMIN, ROLE_FAMILIA_ADMIN ] }      
-      - { path: ^/admin/, role: ROLE_ADMIN }
-      - { path: ^/word/, role: ROLE_ADMIN }
-      - { path: ^/usuarios/, role: [ROLE_FAMILIA_ADMIN, ROLE_ADMIN]}
-      - { path: ^/operador/new, role: [ROLE_FAMILIA_ADMIN, ROLE_ADMIN]}      
-      - { path: ^/operador/create, role: [ROLE_FAMILIA_ADMIN, ROLE_ADMIN]}      
-      - { path: ^/operador/, role: [ROLE_ADMIN, ROLE_FAMILIA_ADMIN]}
-      - { path: ^/auditoria/, role: ROLE_FISCAL }
-      - { path: ^/documentos/, role: [ROLE_AUX, ROLE_CMF_PERITO, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_CMF_DIRECCION] }
-      - { path: ^/documentos/ver_documento, role: [ROLE_AUX, ROLE_CMF_PERITO, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_CMF_DIRECCION] }
-      - { path: ^/hallazgos, role: ROLE_AUX }
-      - { path: ^/denuncias/, role: ROLE_AUX }
-      - { path: ^/bienes_afectados/, role: ROLE_AUX }
-      - { path: ^/periodistas, role: [ROLE_PERIODISTA, ROLE_COORDINACION] }
-      - { path: ^/home_periodista, role: [ROLE_PERIODISTA, ROLE_COORDINACION]  }
-      - { path: ^/home_admin_familia, role: [ROLE_FAMILIA_ADMIN, ROLE_COORDINACION]  }
-      - { path: ^/medidasproteccion, role: [ROLE_SUPER_ADMIN, ROLE_AYUDANTE_FISCAL, ROLE_FAMILIA_AUX, ROLE_AUX] }
-      - { path: ^/medidasproteccion/new, role: [ROLE_SUPER_ADMIN,ROLE_AYUDANTE_FISCAL, ROLE_FAMILIA_AUX] }
-      - { path: ^/medidasproteccion/create, role: [ROLE_SUPER_ADMIN, ROLE_AYUDANTE_FISCAL, ROLE_FAMILIA_AUX] }
-      - { path: ^/profile, role: [ROLE_COORDINACION,ROLE_FISCAL, ROLE_AUX, ROLE_FAMILIA_AUX, ROLE_CUERPO_MEDICO_FORENSE, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_CMF_PERITO] }
-      - { path: ^/_profiler, role: IS_AUTHENTICATED_ANONYMOUSLY }
-      - { path: ^/_wdt, role: IS_AUTHENTICATED_ANONYMOUSLY }    
-      - { path: ^/elemento_despacho/new, role: [ROLE_ADMIN, ROLE_AUX]}
-      - { path: ^/elemento_despacho/edit, role: [ROLE_ADMIN, ROLE_AUX]}
-      - { path: ^/elemento_despacho/asignacion, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA]}    
-      - { path: ^/elemento_despacho/devolucion, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA, ROLE_ORDENANZA]}    
-      - { path: ^/elemento_despacho/estadisticas, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA]}
-      - { path: ^/elemento_despacho/resultado, role: [ROLE_ADMIN, ROLE_AUX, ROLE_ORDENANZA]}
-      - { path: ^/elemento_despacho/actualizarElemento, role: [ROLE_ADMIN, ROLE_AUX, ROLE_ORDENANZA]}
-      - { path: ^/elemento_despacho/show, role: [ROLE_ADMIN, ROLE_AUX, ROLE_ORDENANZA]}
-      - { path: ^/elemento_despacho/nuevaorden, role: [ROLE_ADMIN, ROLE_ORDENANZA]}
-      - { path: ^/elemento_despacho, role: [ROLE_ADMIN, ROLE_AUX]}
-      - { path: ^/admin_rutas, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA]}
-      - { path: ^/item_ruta, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA]}
-      - { path: ^/destinos, role: [ROLE_ADMIN, ROLE_AUX, ROLE_JEFE_ORDENANZA]}
-      - { path: ^/lugares, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA]}
-      - { path: ^/elemento_despacho/new, role: [ROLE_ADMIN, ROLE_AUX]}
-#      - { path: ^/elemento_despacho/index, role: [ROLE_ADMIN, ROLE_ORDENANZA, ROLE_AUX]}
-#      - { path: ^/elemento_despacho/new, role: [ROLE_ADMIN,ROLE_ORDENANZA, ROLE_AUX] }
-#      - { path: ^/elemento_despacho/create, role: [ROLE_ADMIN, ROLE_ORDENANZA, ROLE_AUX] }      
-#      - { path: ^/elemento_despacho/asignacion, role: [ROLE_ADMIN, ROLE_ORDENANZA, ROLE_AUX]}      
-      - { path: ^/despacho/asignacion, role: [ROLE_ADMIN, ROLE_JEFE_ORDENANZA]}
-#      - { path: ^/despacho/index, role: [ROLE_ADMIN, ROLE_ORDENANZA]}
-#      - { path: ^/despacho/index, role: [ROLE_ADMIN, ROLE_ORDENANZA]}
-#      - { path: ^/despacho/new, role: [ROLE_ADMIN,ROLE_ORDENANZA] }
-#      - { path: ^/despacho/create, role: [ROLE_ADMIN, ROLE_ORDENANZA] }      
-#      - { path: ^/despacho/asignacion, role: [ROLE_ADMIN, ROLE_ORDENANZA]}  
-      #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-      #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
-      #- { path: ^, role: IS_AUTHENTICATED_ANONYMOUSLY }      
-      - { path: ^/registrouer, role: [ROLE_ADMIN, ROLE_COORDINACION, ROLE_AUX_UER]}
-      - { path: ^/alcoholemia/indexproc, role: [ROLE_ADMIN, ROLE_COORDINACION]}
-      - { path: ^/solicitudinforme, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_AUX, ROLE_CMF_DIRECCION] }
-      - { path: ^/solicitudinforme/new, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_AUX, ROLE_CMF_DIRECCION] }
-      - { path: ^/solicitudinforme/Reporter, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_DIRECCION, ROLE_CMF_MESA] }
-      - { path: ^/etapainforme, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_CMF_PERITO, ROLE_CMF_DIRECCION] }
-      - { path: ^/etapainforme/seccion/vista, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_CMF_PERITO] }
-      - { path: ^/modelos/, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA ] }
-      - { path: ^/claseinforme/, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION ] }
-      - { path: ^/tipoinforme/actualizar_tipoinforme/, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_AUX ] }
-      - { path: ^/tipoinforme/, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION ] }
-      - { path: ^/etapaportipoinforme/, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION ] }
-      - { path: ^/etapainforme/seccion/perito, role: [ROLE_ADMIN, ROLE_CMF_ADMIN, ROLE_CMF_MESA, ROLE_CMF_JEFESECCION, ROLE_CMF_PERITO] }
-      - { path: ^/panel, role: [ROLE_USER] }
-      - { path: ^, role: ROLE_AUX }
+      - { path: ^, role: IS_AUTHENTICATED_ANONYMOUSLY }
     role_hierarchy:
       ROLE_SUPER_ADMIN: ROLE_ADMIN
-      ROLE_ADMIN:       ROLE_COORDINACION
-      ROLE_COORDINACION: ROLE_UDAPIF
-      ROLE_UDAPIF:       ROLE_FISCAL
-      ROLE_FISCAL:       ROLE_AYUDANTE_FISCAL
-      ROLE_AYUDANTE_FISCAL: ROLE_SECRETARIO
-      ROLE_SECRETARIO:      ROLE_PROSECRETARIO
-      ROLE_PROSECRETARIO:   ROLE_MESA_ENTRADA
-      ROLE_MESA_ENTRADA:    ROLE_AUX
-      ROLE_AUX:
-      ROLE_FAMILIA_ADMIN:    ROLE_FAMILIA_JUEZ
-      ROLE_FAMILIA_JUEZ:    ROLE_FAMILIA_AUX    
-      ROLE_FAMILIA_AUX:
-      ROLE_CUERPO_MEDICO_FORENSE:
-      ROLE_CMF_ADMIN:   
-      ROLE_CMF_DIRECCION:       
-      ROLE_CMF_MESA:    
-      ROLE_CMF_PERITO:
-      ROLE_CMF_JEFESECCION:    
-      ROLE_PROYECTOS_TECNICOS:
-      ROLE_JEFE_ORDENANZA:  ROLE_ORDENANZA
-      ROLE_ORDENANZA:  
-      ROLE_AUX_UER:  
       
      

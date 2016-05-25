@@ -89,7 +89,9 @@ class DoctrineAbmGenerator extends Generator
             //-----llenar el archivo con la plantilla
             $this->generarClaseRepository($pathClassRepository);
         }else {
-            
+            $pathClassRepository = sprintf('%s/Repository/%sRepository.php', $this->bundle->getPath(), str_replace('\\', '/', $this->entity).'Filter');
+            $this->generarClaseRepository($pathClassRepository);
+  
         }
         
         //-------
