@@ -9,8 +9,8 @@
         "doctrine/orm": "^2.4.8",
         "doctrine/doctrine-bundle": "~1.4",
         "incenteev/composer-parameter-handler": "~2.0",
-        "doctrine/mongodb-odm": "1.0.*@dev",
-        "doctrine/mongodb-odm-bundle": "3.0.*@dev"
+        "doctrine/mongodb-odm": "~1.0",
+        "doctrine/mongodb-odm-bundle": "~3.0"
     },
     "minimum-stability": "dev",
     "require-dev": {
