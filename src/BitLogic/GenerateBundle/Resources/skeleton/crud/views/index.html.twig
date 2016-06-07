@@ -1,5 +1,13 @@
 {{ "{% extends '"}}{{ bundle }}{{"::layout.html.twig' %}" }}
+{{ "{% block stylesheets %}" }}
+{{ " {{ parent() }} " }}
 
+{{ "{% endblock %}" }}
+
+{{ "{% block javascripts %}" }}
+{{ " {{ parent() }} " }}
+
+{{ "{% endblock %}" }}
 {{ "{% block contenido %}" }}
 <div class="panel-heading">
   <h4> 
