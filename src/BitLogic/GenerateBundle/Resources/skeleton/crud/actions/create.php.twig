@@ -20,7 +20,7 @@
     {
         $document = new {{ document_class }}();
         $form     = $this->createForm(new {{ document_class }}Type(), $document);
-        $form->bind($request);
+        $form->handleRequest($request);
 
         if ($form->isValid()) {
             $dm = $this->getDocumentManager();
