@@ -37,9 +37,13 @@
                     this.checked = false;
                 // los selects le ponesmos el indice a -
                 else if (tag === 'select') {
-                    idSelect = '#' + this.id;
-                    $(idSelect).select2('val', '');
                     this.selectedIndex = -1;
+                    stringClases=this.className;
+                    var n = stringClases.indexOf("select2"); 
+                    if(n > 0){
+                        idSelect = '#' + this.id;
+                        $(idSelect).select2({allowClear: true});
+                    }
                 }
             });
         }
