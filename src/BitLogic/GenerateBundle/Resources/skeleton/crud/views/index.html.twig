@@ -6,12 +6,27 @@
 
 {{ "{% block javascripts %}" }}
 {{ " {{ parent() }} " }}
-
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip({animation: true});
+        });
+        
+         $(function () {
+            $(".btn-mod").click(function (ev) {
+                ev.preventDefault();
+                var target = $(this).attr("href");
+                $("#modalPlantilla .modal-content").load(target, function () {
+                    $("#modalPlantilla").modal("show");
+                });
+            });
+        });
+        
+    </script>
 {{ "{% endblock %}" }}
 {{ "{% block contenido %}" }}
 <div class="panel-heading">
   <h4> 
-  <span class="glyphicon glyphicon-list"></span>  Listado de {{ document }}
+  <i class="fa fa-list"></i>  Listado de {{ document }}
  </h4>
 </div>
 <hr/>
@@ -19,8 +34,8 @@
 <ul>
     <li>
         <a href="{{ "{{ path('"~ route_name_prefix ~"_new') }}" }}" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus-sign"></span>
-            Agregar Nuevo
+                <i class="fa fa-plus"></i>
+            Agregar Nuevo {{ document }}
         </a>
     </li>
 </ul>
@@ -72,6 +87,12 @@
     {{ '{% endfor %}' }}
     </tbody>
 </table>
+<div class="modal fade bs-example-modal-lg" id="modalPlantilla" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
 
+        </div>
+    </div>
+</div>
 
 {{ "{% endblock %}" }}

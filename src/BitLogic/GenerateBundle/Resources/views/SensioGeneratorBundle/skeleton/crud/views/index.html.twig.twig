@@ -55,7 +55,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4> 
-                <span class="glyphicon glyphicon-list"></span> Listado {{ entity }} </h4>
+                <i class="fa fa-list"></i> Listado {{ entity }} </h4>
         </div> 
     </div>
     <div class="container-fluid">
@@ -63,15 +63,15 @@
             {% if 'new' in actions %}
             <div class="col-md-4">
                 <a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus-sign"></span>
+                    <i class="fa fa-plus"></i>
                     Agregar {{ entity }}
                 </a>
             </div>        
             {% endif %}
             <div class="col-md-8">
                 <div class="dropdown">
-                    <span class="dropdown-toggle btn btn-default glyphicon glyphicon-filter"
-                          data-toggle="dropdown" id="activa_filtros" name="activa_filtros" > Filtros</span>
+                    <span class="dropdown-toggle btn btn-default "
+                          data-toggle="dropdown" id="activa_filtros" name="activa_filtros" ><i class="fa fa-filter"></i> Filtros</span>
                     {{"{% form_theme formFiltro  'BaseBundle:Form:form_filter_layout.html.twig' %}" }}
                     {{'{{ form_start(formFiltro) }}' }}
                     {%- for field, metadata in fields %}

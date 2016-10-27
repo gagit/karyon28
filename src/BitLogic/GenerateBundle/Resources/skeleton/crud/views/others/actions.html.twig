@@ -3,13 +3,17 @@
 
                 {%- for action in record_actions %}
 
-                    <li>
-                        <a href="{{ "{{ path('"~ route_name_prefix ~"_"~ action ~"', { 'id': document.id }) }}" }}"class="btn btn-default">
+                    <li  style="display: inline;">
+                        <a href="{{ "{{ path('"~ route_name_prefix ~"_"~ action ~"', { 'id': document.id }) }}" }}"
                             
                             {% if action=='show' %}
-                                <span class="glyphicon glyphicon-eye-open"></span> Ver
+                                class="btn btn-default  btn-mod"
+                                data-toggle="tooltip" data-placement="top"  title="Click para Ver Datos" data-animation="true" >
+                                <i class="fa fa-eye" ></i> Ver
                             {%else%}
-                                 <span class="glyphicon glyphicon-edit"></span> Editar
+                                class="btn btn-default"
+                                data-toggle="tooltip" data-placement="top"  title="Click para Editar Datos" data-animation="true" >
+                                 <i class="fa fa-edit" ></i> Editar
                             {%endif%}
                         </a>
                     </li>
