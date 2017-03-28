@@ -24,7 +24,7 @@
                 $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
 
                 if (!$entity) {
-                    throw $this->createNotFoundException('No se pudo encontrrar la entidad {{ entity }} entity.');
+                    throw $this->createNotFoundException('No se pudo encontrrar la entidad {{ entity }} .');
                 }
 
                 $em->remove($entity);
@@ -63,7 +63,7 @@
             ->setMethod('DELETE')
             ->add('submit', 'submit', array(
                                'attr'=> array(
-                                    'onclick'=>"return confirm('¿Estas seguro de ELIMIAR el elemento?');",
+                                    'onclick'=>"return confirm('¿Estas seguro de ELIMINAR el elemento?');",
                                     'class'=>'btn btn-danger glyphicon glyphicon-remove-sign',
                                    'data-toggle' => 'tooltip',
                                    'data-placement'=> 'top',
