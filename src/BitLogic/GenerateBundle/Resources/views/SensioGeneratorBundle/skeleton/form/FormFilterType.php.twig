@@ -5,7 +5,7 @@ namespace {{ namespace }}\Form\Filter{{ entity_namespace ? '\\' ~ entity_namespa
 {% block use_statements %}
 use BitLogic\BaseBundle\Form\FiltroHtmlType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 {% endblock use_statements %}
 
 {% block class_definition %}
@@ -63,9 +63,9 @@ class {{ form_class }} extends FiltroHtmlType
     {% endif %}
 
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         parent::setDefaultOptions($resolver);
     }
