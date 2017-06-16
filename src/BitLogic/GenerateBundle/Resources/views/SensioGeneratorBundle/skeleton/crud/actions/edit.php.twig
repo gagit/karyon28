@@ -19,26 +19,26 @@
 {% block method_body %}
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+        ${{ entity | lower }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
 
-        if (!$entity) {
+        if (!${{ entity | lower }}) {
             throw $this->createNotFoundException('No se pudo encontrar {{ entity }} .');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm(${{ entity | lower }});
         $deleteForm = $this->createDeleteForm($id);
 {% endblock method_body %}
 
 {% block method_return %}
 {% if 'annotation' == format %}
         return array(
-            'entity'      => $entity,
+            'entity'      => ${{ entity | lower }},
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => ${{ entity | lower }},
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
@@ -50,14 +50,14 @@
     /**
     * Crea un formulario para editar una entidad {{ entity }}.
     *
-    * @param {{ entity_class }} $entity La entidad
+    * @param {{ entity_class }} ${{ entity | lower }} La entidad
     *
     * @return \Symfony\Component\Form\Form El formulario
     */
-    private function createEditForm({{ entity_class }} $entity)
+    private function createEditForm({{ entity_class }} ${{ entity | lower }})
     {
-        $form = $this->createForm(new {{ entity_class }}Type(), $entity, array(
-            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new {{ entity_class }}Type(), ${{ entity | lower }}, array(
+            'action' => $this->generateUrl('{{ route_name_prefix }}_update', array('id' => ${{ entity | lower }}->getId())),
             'attr'=> array(
                 'id' => 'edit-form'
             ),

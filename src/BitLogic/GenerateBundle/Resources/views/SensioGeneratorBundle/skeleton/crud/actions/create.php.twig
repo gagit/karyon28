@@ -12,18 +12,19 @@
 {% endblock phpdoc_method_annotations %}
      */
 {% block method_definition %}
-    public function createAction(Request $request)
+    public function createAction()
 {% endblock method_definition %}
     {
 {% block method_body %}
-        $entity = new {{ entity_class }}();
-        $form = $this->createCreateForm($entity);
+        $request = $this->get('request_stack')->getCurrentRequest();
+        ${{ entity | lower }} = new {{ entity_class }}();
+        $form = $this->createCreateForm(${{ entity | lower }});
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             try{
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($entity);
+                $em->persist(${{ entity | lower }});
                 $em->flush();
                 $this->get('session')->getFlashBag()->add(
                             'notice', 'El proceso se realizó correctamente!');
@@ -44,12 +45,12 @@
 {% block method_return %}
 {% if 'annotation' == format %}
         return array(
-            'entity' => $entity,
+            'entity' => ${{ entity | lower }},
             'form'   => $form->createView(),
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:new.html.twig', array(
-            'entity' => $entity,
+            'entity' => ${{ entity | lower }},
             'form'   => $form->createView(),
         ));
 {% endif %}
@@ -60,13 +61,13 @@
     /**
     * Crea el formulario para crear un/a {{ entity }} .
     *
-    * @param {{ entity_class }} $entity La entidad
+    * @param {{ entity_class }} ${{ entity | lower }} La entidad
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createCreateForm({{ entity_class }} $entity)
+    private function createCreateForm({{ entity_class }} ${{ entity | lower }})
     {
-        $form = $this->createForm(new {{ entity_class }}Type(), $entity, array(
+        $form = $this->createForm(new {{ entity_class }}Type(), ${{ entity | lower }}, array(
             'action' => $this->generateUrl('{{ route_name_prefix }}_create'),
             'method' => 'POST',
         ));

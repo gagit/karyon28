@@ -11,23 +11,24 @@
 {% endblock phpdoc_method_annotations %}
      */
 {% block method_definition %}
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
 {% endblock method_definition %}
     {
 {% block method_body %}
+        $request = $this->get('request_stack')->getCurrentRequest();
         $form = $this->createDeleteForm($id);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             try{
                 $em = $this->getDoctrine()->getManager();
-                $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+                ${{ entity | lower }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
 
-                if (!$entity) {
+                if (!${{ entity | lower }}) {
                     throw $this->createNotFoundException('No se pudo encontrrar la entidad {{ entity }} .');
                 }
 
-                $em->remove($entity);
+                $em->remove(${{ entity | lower }});
                 $em->flush();
             } catch (\Doctrine\DBAL\DBALException $DBalEx) {
                      $this->get('session')->getFlashBag()->add(

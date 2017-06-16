@@ -1,17 +1,17 @@
    
-    public function getQuery{{ entity_class }}($grilla) {
+    public function getQuery{{ entity_class }}($filtro) {
 
-        $query = $this->createQueryBuilder('q')
+        $qb = $this->createQueryBuilder('q')
                 ->select('q');
-{% for field,metadata in fields %}
-    {% if field !='id' %}
-            if($grilla->{{ field }}) {
-                $query->andWhere($query->expr()->eq('q.{{ field }}', ':{{ field }}'))
-                    ->setParameter('{{ field }}', $grilla->{{ field }});
-            }
-    {% endif %}
-{% endfor %}
+        {% for field,metadata in fields %}
+            {% if field !='id' %}
+        if($filtro->{{ field }}) {
+            $qb->andWhere($qb->expr()->eq('q.{{ field }}', ':{{ field }}'))
+                ->setParameter('{{ field }}', $filtro->{{ field }});
+        }
+            {% endif %}
+        {% endfor %}
         
-        return  $query;
+        return  $qb;
     }
 

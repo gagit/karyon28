@@ -18,7 +18,7 @@
     {
 {% block method_body %}
         $em = $this->getDoctrine()->getManager();
-        $request = $this->getRequest();
+        $request = $this->get('request_stack')->getCurrentRequest();
         $paginator = $this->get('knp_paginator');
 
         $formFiltro = $this->createForm(new {{ entity }}FilterType(),null,array(
@@ -36,7 +36,7 @@
         $query = $em->getRepository('{{ bundle }}:{{ entity }}')
                     ->getQuery{{ entity }}($grilla);
         $entities = $paginator->paginate($query,   //--->query que se utiliza
-                $this->getRequest()->query->get('pagina', 1), //--->pagina seleccionada, sino viene nada toma 1
+                $request->query->get('pagina', 1), //--->pagina seleccionada, sino viene nada toma 1
                 20  //---> cant de filas x pagina
         );
 {% endblock method_body %}

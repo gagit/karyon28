@@ -1,7 +1,7 @@
 
     /**
 {% block phpdoc_method_header %}
-     * Busca y mustra un/a {{ entity }} .
+     * Busca y muestra un/a {{ entity }} .
 {% endblock phpdoc_method_header %}
      *
 {% block phpdoc_method_annotations %}
@@ -19,10 +19,10 @@
 {% block method_body %}
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+        ${{ entity | lower }}= $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('No se pudo encontrrar la entidad  {{ entity }} entity.');
+        if (!${{ entity | lower }}) {
+            throw $this->createNotFoundException('No se pudo encontrar la entidad  {{ entity }} entity.');
         }
 
 {% endblock method_body %}
@@ -30,12 +30,12 @@
 {% block method_return %}
 {% if 'annotation' == format %}
         return array(
-            'entity'      => $entity,
+            'entity'      => ${{ entity | lower }},
 
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => ${{ entity | lower }},
 
         ));
 {% endif %}

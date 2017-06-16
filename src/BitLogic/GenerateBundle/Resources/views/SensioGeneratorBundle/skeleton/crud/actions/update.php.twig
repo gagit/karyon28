@@ -1,7 +1,7 @@
 
     /**
 {% block phpdoc_method_header %}
-     * Actualizar un/a {{ entity }} existente.
+     * Actualiza un/a {{ entity }} existente.
 {% endblock phpdoc_method_header %}
      *
 {% block phpdoc_method_annotations %}
@@ -13,28 +13,29 @@
 {% endblock phpdoc_method_annotations %}
      */
 {% block method_definition %}
-    public function updateAction(Request $request, $id)
+    public function updateAction($id)
 {% endblock method_definition %}
     {
 {% block method_body %}
+        $request = $this->get('request_stack')->getCurrentRequest();
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
+        ${{ entity | lower }} = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('No se pudo encontrrar la entidad {{ entity }} .');
+        if (! ${{ entity | lower }}) {
+            throw $this->createNotFoundException('No se pudo encontrar la entidad {{ entity }} .');
         }
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm(${{ entity | lower }});
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             try{        
-                $em->persist($entity);
+                $em->persist(${{ entity | lower }});
                 $em->flush();
                 $this->get('session')->getFlashBag()->add(
-                                'notice', 'El cambio se realizó correctamente!');
+                       'notice', 'El cambio se realizó correctamente!');
                 return $this->redirect($this->generateUrl('{{ route_name_prefix }}'));
             } catch (\Doctrine\DBAL\DBALException $DBalEx) {
                  $this->get('session')->getFlashBag()->add(
@@ -51,13 +52,13 @@
 {% block method_return %}
 {% if 'annotation' == format %}
         return array(
-            'entity'      => $entity,
+            'entity'      => ${{ entity | lower }},
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
 {% else %}
         return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
-            'entity'      => $entity,
+            'entity'      => ${{ entity | lower }},
             'edit_form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));

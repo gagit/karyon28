@@ -26,48 +26,38 @@ class {{ form_class }} extends FiltroHtmlType
             {% if field !='id' %}
                 {%- if metadata.type in [ 'datetime'] %}
 
-                        ->add('{{ field }}','datetime',
-                                array(
+                ->add('{{ field }}','datetime',
+                        array(
+                            'label'=>'Fecha {{ field }}: ',
+                            'widget' => 'single_text',
+                            'format' => 'dd/MM/yyyy - H:m',
+                            'attr'=> array('class'=>'form-control txtFecha',
+                                           'readonly'=>true),
 
-                                    'label'=>'Fecha: ',
-                                    'widget' => 'single_text',
-                                    'format' => 'dd/MM/yyyy - H:m',
-
-                                    'attr'=> array('class'=>'form-control',
-                                                              'readonly'=>true),
-
-                                ))
-
+                        ))
                 {%- else %}
                     {%- if metadata.type in ['date'] %}
-                            ->add('{{ field }}','date',
-                                array(
-                                    'required'=>false,
-
-                                      'label'=>'Fecha: ',
-                                      'widget' => 'single_text',
-                                      'format' => 'dd/MM/yyyy',
-
-                                      'attr'=> array('class'=>'form-control',
-                                                              'readonly'=>true),
-
-                                ))            
-
-                    {%- else %}
-
-                    ->add('{{ field }}',null, array(
-                              'attr'=>array(
-                                     'class' =>'form-control',
-                              )
+                ->add('{{ field }}','date',
+                    array(
+                        'required'=>false,
+                        'label'=>'Fecha {{ field }}: ',
+                        'widget' => 'single_text',
+                        'format' => 'dd/MM/yyyy',
+                        'attr'=> array('class'=>'form-control txtFecha',
+                                       'readonly'=>true),
                     ))
+                    {%- else %}
+                ->add('{{ field }}',null, array(
+                      'attr'=>array(
+                        'class' =>'form-control',
+                      )
+                ))
 
                     {%- endif %}
                 {%- endif %}
             {%- endif %}
-            
-            
-        {%- endfor %}
 
+        {%- endfor %}
         ;
     }
     {% endif %}
