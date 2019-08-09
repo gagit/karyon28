@@ -1,3 +1,0 @@
-GenBundle_plantillas:
-    resource: "@DocBundle/Resources/config/routing_plantillas.yml"
-    prefix:   /plantillas/

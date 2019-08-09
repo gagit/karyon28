@@ -1,6 +1,6 @@
 <?php
 
-namespace BDS\DoctrineBundle\lib\Doctrine\DBAL\Event\Listeners;
+namespace BaseBundle\Doctrine\DBAL\Event\Listeners;
 
 use Doctrine\DBAL\Event\Listeners\OracleSessionInit as BaseOracleSessionInit;
 use Doctrine\DBAL\Event\ConnectionEventArgs;

@@ -1,6 +1,6 @@
 <?php
 
-namespace BDS\DoctrineBundle\lib\Doctrine\ORM\Id;
+namespace BaseBundle\Doctrine\ORM\Id;
 
 use Doctrine\ORM\Id\AbstractIdGenerator;
 use Serializable, Doctrine\ORM\EntityManager;
