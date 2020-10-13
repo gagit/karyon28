@@ -14,21 +14,15 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
-            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
-            //----------
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            //--------------
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new BDS\DoctrineBundle\BDSDoctrineBundle(),
-            new Gen\DocBundle\DocBundle(),
-            new Gen\uiBundle\GenuiBundle(),
-            new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
-
             //--------------
             new BitLogic\BaseBundle\BaseBundle(),
             new BitLogic\GenerateBundle\GenerateBundle(),
-            new Bl\AcmeBundle\AcmeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -36,7 +30,6 @@ class AppKernel extends Kernel
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
-
         return $bundles;
     }
 
