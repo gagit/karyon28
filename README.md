@@ -8,6 +8,14 @@ Este pequeño proyecto provee un conjunto de clases para automatizar la generaci
 Para instalarlo debe utilizarse composer.
 
 
-composer require gagit/karyon28
+# composer require gagit/karyon28
+
+
+Luego de instalado se debe correr el comando
+
+# php app/console doctrine:generate:abm
+
+
+e indicar todo lo que se pregunta.  
 
 
